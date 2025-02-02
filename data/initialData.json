@@ -1,0 +1,43 @@
+{
+  "adsGroups": [
+    {
+      "id": "1",
+      "name": "Summer Sale Banner",
+      "adType": "Banner",
+      "deviceType": "Mobile",
+      "template": "Image",
+      "targetUrl": "https://example.com/summer-sale"
+    },
+    {
+      "id": "2",
+      "name": "App Install Video",
+      "adType": "Rewarded",
+      "deviceType": "Mobile",
+      "template": "Video",
+      "targetUrl": "https://example.com/app-store"
+    }
+  ],
+  "campaigns": [
+    {
+      "id": "1",
+      "name": "Q1 Mobile App Campaign",
+      "type": "CPA",
+      "status": "live",
+      "budget": 12500,
+      "totalBudget": 50000,
+      "conversions": 2500,
+      "ctr": 5
+    },
+    {
+      "id": "2",
+      "name": "Q1 Mobile App Campaign (ROAS)",
+      "type": "ROAS",
+      "status": "learning",
+      "budget": 12500,
+      "totalBudget": 50000,
+      "conversions": 2500,
+      "ctr": 5
+    }
+  ]
+}
+
