@@ -1,5 +1,3 @@
-"use client"
-
 import Link from "next/link"
 import { BarChart3, Settings, Square, SquareStack } from "lucide-react"
 import { cn } from "@/lib/utils"
