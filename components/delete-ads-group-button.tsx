@@ -6,13 +6,14 @@ import { deleteAdsGroup } from "@/utils/dataOperations"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
+  DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { useState } from "react"
+import { toast } from "@/components/ui/use-toast"
 
 interface DeleteAdsGroupButtonProps {
   id: string
@@ -24,9 +25,25 @@ export function DeleteAdsGroupButton({ id, name, onDelete }: DeleteAdsGroupButto
   const [open, setOpen] = useState(false)
 
   const handleDelete = async () => {
-    await deleteAdsGroup(id)
-    onDelete()
-    setOpen(false)
+    try {
+      const success = await deleteAdsGroup(id)
+      if (success) {
+        onDelete()
+        setOpen(false)
+        toast({
+          title: "Success",
+          description: `Ads Group "${name}" has been deleted.`,
+        })
+      }
+    } catch (error) {
+      console.error("Error deleting Ads Group:", error)
+      toast({
+        title: "Error",
+        description: "Failed to delete Ads Group. Please try again.",
+        variant: "destructive",
+      })
+      setOpen(false)
+    }
   }
 
   return (

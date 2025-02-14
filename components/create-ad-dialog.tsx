@@ -1,34 +1,34 @@
 "use client"
-
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { CreateAdForm } from "./create-ad-form"
-import { useState } from "react"
-import type { Ad } from "@/utils/dataOperations"
+import type { Ad, AdsGroup } from "@/utils/dataOperations"
 
 interface CreateAdDialogProps {
+  isOpen: boolean
+  onClose: () => void
   onCreateSuccess: (newAd: Ad) => void
+  adsGroups: AdsGroup[]
+  preSelectedAdsGroup?: AdsGroup | null
 }
 
-export function CreateAdDialog({ onCreateSuccess }: CreateAdDialogProps) {
-  const [open, setOpen] = useState(false)
-
+export function CreateAdDialog({
+  isOpen,
+  onClose,
+  onCreateSuccess,
+  adsGroups,
+  preSelectedAdsGroup,
+}: CreateAdDialogProps) {
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button>Create New Ad</Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-2xl">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Create New Ad</DialogTitle>
         </DialogHeader>
         <CreateAdForm
           mode="create"
-          onSave={() => setOpen(false)}
-          onCreateSuccess={(newAd) => {
-            onCreateSuccess(newAd)
-            setOpen(false)
-          }}
+          onSave={onCreateSuccess}
+          adsGroups={adsGroups}
+          preSelectedAdsGroup={preSelectedAdsGroup}
         />
       </DialogContent>
     </Dialog>

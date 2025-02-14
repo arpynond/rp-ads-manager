@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Trash } from "lucide-react"
-import { deleteAd } from "@/utils/dataOperations"
+import { deleteAdAction } from "@/utils/server-actions"
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { useState } from "react"
 import { toast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
 
 interface DeleteAdButtonProps {
   id: string
@@ -23,16 +24,21 @@ interface DeleteAdButtonProps {
 
 export function DeleteAdButton({ id, name, onDelete }: DeleteAdButtonProps) {
   const [open, setOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const router = useRouter()
 
   const handleDelete = async () => {
     try {
-      await deleteAd(id)
+      setIsDeleting(true)
+      await deleteAdAction(id)
       onDelete()
       setOpen(false)
       toast({
         title: "Success",
         description: "Ad deleted successfully",
       })
+      // Force a router refresh to ensure all data is up to date
+      router.refresh()
     } catch (error) {
       console.error("Error deleting Ad:", error)
       toast({
@@ -40,6 +46,8 @@ export function DeleteAdButton({ id, name, onDelete }: DeleteAdButtonProps) {
         description: "Failed to delete Ad. Please try again.",
         variant: "destructive",
       })
+    } finally {
+      setIsDeleting(false)
     }
   }
 
@@ -58,11 +66,11 @@ export function DeleteAdButton({ id, name, onDelete }: DeleteAdButtonProps) {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button variant="outline" onClick={() => setOpen(false)}>
+          <Button variant="outline" onClick={() => setOpen(false)} disabled={isDeleting}>
             Cancel
           </Button>
-          <Button variant="destructive" onClick={handleDelete}>
-            Delete
+          <Button variant="destructive" onClick={handleDelete} disabled={isDeleting}>
+            {isDeleting ? "Deleting..." : "Delete"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -26,13 +26,17 @@ export function DeleteCampaignButton({ id, name, onDelete }: DeleteCampaignButto
 
   const handleDelete = async () => {
     try {
-      await deleteCampaign(id)
-      onDelete()
-      setOpen(false)
-      toast({
-        title: "Success",
-        description: "Campaign deleted successfully",
-      })
+      const success = await deleteCampaign(id)
+      if (success) {
+        onDelete()
+        setOpen(false)
+        toast({
+          title: "Success",
+          description: "Campaign deleted successfully",
+        })
+      } else {
+        throw new Error("Failed to delete Campaign")
+      }
     } catch (error) {
       console.error("Error deleting Campaign:", error)
       toast({
